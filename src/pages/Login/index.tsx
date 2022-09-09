@@ -15,6 +15,7 @@ import { Input } from "../../components/Form/input";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const signInSchema = yup.object().shape({
   email: yup.string().required("Email obrigatorio").email("email inválido"),
@@ -28,6 +29,7 @@ interface SignInData {
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
 
   const {
     formState: { errors },
@@ -37,26 +39,44 @@ export const Login = () => {
     resolver: yupResolver(signInSchema),
   });
 
-  const handleSignIn = (data: SignInData) => console.log(data);
+  const handleSignIn = (data: SignInData) => {
+    setLoading(true);
+    console.log(data);
+    signIn(data)
+      .then((_) => setLoading(false))
+      .catch((err) => setLoading(false));
+  };
 
   return (
     <Flex
       alignItems="center"
-      padding="10px 15px"
+      padding={["10px 15px", "10px 15px", "0px", "0px"]}
       color="white"
-      height="99.999vh"
-      bgGradient="linear(to-r, purple.800 65%, white 35%)"
+      justifyContent="center"
+      height={["auto", "auto", "99.99999vh", "99.99999vh"]}
+      bgGradient={[
+        "linear(to-b, purple.800 65%, white 35%)",
+        "linear(to-b, purple.800 65%, white 35%)",
+        "linear(to-r, purple.800 65%, white 35%)",
+        "linear(to-r, purple.800 65%, white 35%)",
+      ]}
     >
       <Flex
-        w="100%"
+        w={["100%", "100%", "90%", "65%"]}
         justifyContent="center"
-        flexDirection="row"
+        flexDirection={["column", "column", "row", "row"]}
         alignItems="center"
       >
-        <Grid w="100%" paddingRight="100px">
-          <Image src={LogoSecundary} alt="doit" boxSize="120px" />
-          <Heading as="h1">O jeito facil, grátis</Heading>
-          <Text>
+        <Grid w={["100%", "100%", "50%", "50%"]} paddingRight="100px">
+          <Image
+            src={LogoSecundary}
+            alt="doit"
+            boxSize={["120px", "120px", "150px", "150px"]}
+          />
+          <Heading as="h1" mt="4px">
+            O jeito facil, grátis
+          </Heading>
+          <Text w={["150px", "250px", "350px"]}>
             Flexivel e atrativo de gerenciar
             <b>seus projetos em uma única plataforma</b>
           </Text>
@@ -64,8 +84,8 @@ export const Login = () => {
         <Grid
           onSubmit={handleSubmit(handleSignIn)}
           as="form"
-          mt="4"
-          w="100%"
+          mt={["4px", "4px", "0px"]}
+          w={["50%", "50%", "40%", "40%"]}
           padding="30px 15px"
           border="3px solid"
           borderColor="gray.100"
@@ -73,9 +93,10 @@ export const Login = () => {
           color="gray.900"
         >
           <Heading size="lg"> Bem vindo de Volta!</Heading>
-          <VStack mt="4" spacing="5">
-            <Box>
+          <VStack mt="4" spacing="4">
+            <Box w="100%">
               <Input
+                w="100%"
                 placeholder="Digite o seu Login"
                 icon={FaEnvelope}
                 label="Login"
@@ -89,7 +110,6 @@ export const Login = () => {
                 </Text>
               )}
             </Box>
-
             <Input
               placeholder="Digite a sua Senha"
               icon={FaLock}
@@ -115,7 +135,7 @@ export const Login = () => {
             >
               Entrar
             </Button>
-            <Text>Ainda não possui uma conta?</Text>
+            <Text color="gray.400">Ainda não possui uma conta?</Text>
             <Button
               bg="gray.100"
               w="100%"

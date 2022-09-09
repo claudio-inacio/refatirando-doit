@@ -39,6 +39,7 @@ const inputVariation: inputVAriationOptions = {
   filled: "green.500",
 };
 
+//ForwardRef é utilizado para pegarmos a referencia do nosso INPUT
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   { name, label, error = null, icon: Icon, ...rest },
   ref
